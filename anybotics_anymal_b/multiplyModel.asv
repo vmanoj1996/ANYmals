@@ -1,0 +1,40 @@
+file = "anymal_b.xml";
+
+text = fileread(file);
+
+bodyStart = strfind(text, "<!-- <COMPOSITE_BODY> -->")
+
+bodyEnd = strfind(text, "<!-- </COMPOSITE_BODY> -->")
+
+before = extractBefore(text, bodyStart);
+bodyCode = extractBetween(text, bodyStart, bodyEnd);
+bodyCode = bodyCode{:};
+after = extractAfter(text, bodyEnd);
+
+newbodyFull = []
+count =  10;
+for i=1:count
+    newbody = strrep(bodyCode, '$robot$', ['r_', num2str(i), '_']);
+    newbody = strrep(newbody, '$x$', num2str(i*0.6));
+    newbody = strrep(newbody, '$y$', num2str(0));
+    newbodyFull = [newbodyFull newbody];
+end
+
+newcontent = [before newbodyFull after]
+contactStart = strfind(newcontent, "<!-- COMPOSITE_CONTACT -->")
+contactEnd = strfind(newcontent, "<!-- /COMPOSITE_CONTACT -->")
+
+before = extractBefore(newcontent, contactStart);
+contactCode = extractBetween(newcontent, contactStart, contactEnd);
+after = extractAfter(newcontent, contactEnd);
+
+newContactFull = []
+for i=1:count
+    newcontact = strrep(bodyCode, '$robot$', ['r_', num2str(i), '_']);
+    newContactFull = [newContactFull newcontact];
+
+outputFile = "anymal_b_multiplied.xml"
+
+outFileId = fopen(outputFile, 'w');
+fprintf(outFileId, "%s", newcontent);
+fclose(outFileId)
