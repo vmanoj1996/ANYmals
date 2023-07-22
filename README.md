@@ -4,7 +4,7 @@
 
 ## Acknowledgments:
 
-Makes use of Kevin Zakka's work for mujoco_menajerie repository
+Makes use of Kevin Zakka's work on mujoco_menajerie repository
 https://github.com/deepmind/mujoco_menagerie
 
 @software{menagerie2022github,
